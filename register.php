@@ -14,6 +14,10 @@ class register
     }
     return $salt;
   }
+  function not_empty(){
+    if($this->login!=''&&$this->password!=''&&$this->confirm_password!=''&&$this->email!=''&&$this->name!=''){return true;}
+    else {return false;}
+  }
   function create(){
     $salt = register::generateSalt();
     $pass=md5($this->password.$salt);
@@ -71,26 +75,31 @@ class register
     else {return false;}
   }
   function create_new_user(){
-    if($this->check_password()){
-      if($this->check_login()){
-        if($this->check_email()){
-          $this->create();
-          $a = array('a' => "success");
-          echo json_encode($a);
+    if($this->not_empty()){
+      if($this->check_password()){
+        if($this->check_login()){
+          if($this->check_email()){
+            $this->create();
+            $a = array('a' => "success");
+            echo json_encode($a);
+          }
+          else{
+            $rr = array('a' => "such email is already taken");
+            echo json_encode($rr);
+          }
         }
-        else{
-          $rr = array('a' => "such email is already exist");
-          echo json_encode($rr);
+        else {
+          $ar = array('a' => "such login is already taken");
+          echo json_encode($ar);
         }
       }
-      else {
-        $ar = array('a' => "such login is already exist");
+      else{
+        $ar = array('a' => "password and confirm_password are not equal");
         echo json_encode($ar);
       }
     }
-    else
-    {
-      $ar = array('a' => "password and confirm_password are not equal");
+    else{
+      $ar = array('a' => "there are empty fields");
       echo json_encode($ar);
     }
   }

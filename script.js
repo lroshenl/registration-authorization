@@ -29,19 +29,44 @@ $(document).ready(function() {
     data = JSON.parse(data);
     for(var id in data)
     {
-      alert(data[id]);
+      if (data[id]=="success")
+      {
+        alert(data[id]);
+        $("#dialog").trigger("reset");
+      }
+      else {
+        alert(data[id]);
+      }
     }
-    //$("#dialog").trigger("reset");
   });
+    //$("#dialog").trigger("reset");
     return false;
 	});
 });
 
 $(document).ready(function() {
+	$("#second").bind("click",function() {
+    $.post("autorization.php",{login:$("#login1").val(),
+    password:$("#password1").val(),
+  },function(data)
+  {
+    data = JSON.parse(data);
+    for(var id in data)
+    {
+      alert(data[id]);
+      //$("#dialog").trigger("reset");
+    }
+  });
+    //$("#dialog").trigger("reset");
+    return false;
+	});
+});
+
+/*$(document).ready(function() {
 	$("#dialog1").submit(function() {
 		$.ajax({
 			type: "POST",
-			url: "main.php",
+			url: "autorization.php",
 			data: $(this).serialize()
 		}).done(function() {
 			$(this).find("input").val("");
