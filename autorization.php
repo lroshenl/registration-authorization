@@ -1,4 +1,5 @@
 <?php
+session_start();
 class user
 {
   public $login;
@@ -10,31 +11,54 @@ class user
   function get_all(){
       return "$this->login"."$this->password";
   }
-/*  function check_all(){
-    $flag;
+  function check_all(){
+    $flag = false;
     $xml=simplexml_load_file("test1.xml") or die("Error: Cannot create object");
     foreach($xml->children() as $books) {
       $login1 = $books->login;
       if($this->login==$login1){
-        $pass=$this->password;
+        $flag = true;
         $salt=$books->salt;
-        $passh=md5($pass.$salt)
-        if($passh==$books->password)
+        $pass=md5($this->password.$salt);
+        if($pass==$books->password)
         {
-          $ar = array('a' => "ohyenno");
+          setcookie("login", $this->login, time()+60*60*24*30);
+          $ar = array('a' => "ohyenno",'b'=>$this->login);
           echo json_encode($ar);
+        }
+        else {
+          $arv = array('a' => "Wrong password");
+          echo json_encode($arv);
         }
       }
     }
-    if($flag==false){return false;}
-    else {return $flag;}
-  }*/
-
+    if($flag==false){
+      $ard = array('a' => "Wrong login");
+      echo json_encode($ard);
+    }
+  }
+  function isset(){
+    if(isset($_COOKIE['login']))
+    {
+      $ar = array('a' => "ohyenno",'b'=>$this->login);
+      echo json_encode($ar);
+    }
+    else {
+      $this->check_all();
+    }
+  }
+  function exit()
+  {
+    unset($_COOKIE['login']);
+  }
 }
 
 $a = new user();
 $a->set_all();
-//$a->check_all();
-$arc = array('b' => "ohyenno");
-echo json_encode($arc);
+$a->isset();
+if ($_POST['exit']=="exit") {
+  $a->exit();
+  $_POST['exit']='';
+}
+
 ?>
