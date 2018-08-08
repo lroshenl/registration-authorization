@@ -6,7 +6,7 @@ class register
   public $confirm_password;
   public $email;
   public $name;
-  static function generateSalt() {
+  static function generateSalt() {//generating dynamic salt
     $salt = '';
     $length = rand(5,10);
     for($i=0; $i<$length; $i++) {
@@ -17,8 +17,8 @@ class register
   function not_empty(){
     if($this->login!=''&&$this->password!=''&&$this->confirm_password!=''&&$this->email!=''&&$this->name!=''){return true;}
     else {return false;}
-  }
-  function create(){
+  }//cheking entered data
+  function create(){//creating new user in xml file
     $salt = register::generateSalt();
     $pass=md5($this->password.$salt);
     $xml = new domDocument('1.0','utf-8');
@@ -46,15 +46,15 @@ class register
     $this->confirm_password=$_POST["confirm_password"];
     $this->email=$_POST["email"];
     $this->name=$_POST["name"];
-  }
+  }//setting all fields
   function get_all(){
     return "$this->login"."$this->password"."$this->confirm_password"."$this->email"."$this->name";
   }
-  function check_password(){
+  function check_password(){//checking password and confirm_password
     if($this->password==$this->confirm_password){return true;}
     else {return false;}
   }
-  function check_login(){
+  function check_login(){//checking login
     $flag=true;
     $xml=simplexml_load_file("test1.xml") or die("Error: Cannot create object");
     foreach($xml->children() as $books) {
@@ -64,7 +64,7 @@ class register
     if($flag){return true;}
     else {return false;}
   }
-  function check_email(){
+  function check_email(){//checking email
     $flag=true;
     $xml=simplexml_load_file("test1.xml") or die("Error: Cannot create object");
     foreach($xml->children() as $books) {
@@ -74,7 +74,7 @@ class register
     if($flag){return true;}
     else {return false;}
   }
-  function create_new_user(){
+  function create_new_user(){//checking all fields and creating new user
     if($this->not_empty()){
       if($this->check_password()){
         if($this->check_login()){

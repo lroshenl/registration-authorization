@@ -4,14 +4,14 @@ class user
 {
   public $login;
   public $password;
-  function set_all(){
+  function set_all(){//setting all fields
     $this->login=$_POST["login"];
     $this->password=$_POST["password"];
   }
   function get_all(){
       return "$this->login"."$this->password";
   }
-  function check_all(){
+  function check_all(){//checking login and password
     $flag = false;
     $xml=simplexml_load_file("test1.xml") or die("Error: Cannot create object");
     foreach($xml->children() as $books) {
@@ -23,8 +23,6 @@ class user
         if($pass==$books->password)
         {
           setcookie("login", $this->login, time()+60*60*24*30);
-          $ar = array('a' => "ohyenno",'b'=>$this->login);
-          echo json_encode($ar);
         }
         else {
           $arv = array('a' => "Wrong password");
@@ -37,28 +35,20 @@ class user
       echo json_encode($ard);
     }
   }
-  function isset(){
+  function isset(){//creating cookie if user is loged in
     if(isset($_COOKIE['login']))
     {
-      $ar = array('a' => "ohyenno",'b'=>$this->login);
+      $ar = array('a' => "success");
       echo json_encode($ar);
     }
     else {
       $this->check_all();
     }
   }
-  function exit()
-  {
-    unset($_COOKIE['login']);
-  }
 }
 
 $a = new user();
 $a->set_all();
 $a->isset();
-if ($_POST['exit']=="exit") {
-  $a->exit();
-  $_POST['exit']='';
-}
 
 ?>

@@ -6,26 +6,43 @@
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  function get_cookie ( cookie_name ){//checking cookie
+    var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
+    if ( results )
+      return ( unescape ( results[2] ) );
+    else
+      return null;
+  }
+  $(document).ready(function(){//if cookie is set forms are not shown
+    if(get_cookie("login")!=null){
+      $( "#dialog_registration" ).dialog( "close" );
+      $( "#dialog_autorization" ).dialog( "close" );
+      $('#MyButton').show();
+      document.getElementById('text').innerHTML = "hello  "+get_cookie("login");
+    }
+  });
+</script>
 
   <title>Registration/Authorization</title>
  </head>
  <body>
    <div id="text"></div>
    <button id="MyButton">Exit</button>
-  <form id="dialog" >
-    <p><button id="opener">Registration</button><button id="opener1">Authorization</button></p>
-    <p><input  type="text" placeholder="login" id="login"  required> </p>
-    <p><input  type="text" placeholder="password" id="password" required> </p>
-    <p><input  type="text" placeholder="confirm_password" id="confirm_password" required> </p>
-    <p><input  type="text" placeholder="email" id="email" required> </p>
-    <p><input  type="text" placeholder="name" id="name" required> </p>
+  <form id="dialog_registration" >
+    <p><button id="opener_registration">Registration</button><button id="opener_autorization">Authorization</button></p>
+    <p><input  type="text" placeholder="login" id="login_registration"  required> </p>
+    <p><input  type="password" placeholder="password" id="password_registration" required> </p>
+    <p><input  type="password" placeholder="confirm_password" id="confirm_password" required> </p>
+    <p><input  type="email" placeholder="email" id="email_registration" required> </p>
+    <p><input  type="text" placeholder="name" id="name_registration" required> </p>
    <p><button id="first">Отправить</button></p>
   </form>
 
-<form id="dialog1" >
-  <p><button id="opener">Registration</button><button id="opener1">Authorization</button></p>
-  <p><input  type="text" placeholder="login" id="login1" required> </p>
-  <p><input  type="text" placeholder="password" id="password1" required> </p>
+<form id="dialog_autorization" >
+  <p><button id="opener_registration">Registration</button><button id="opener_autorization">Authorization</button></p>
+  <p><input  type="text" placeholder="login" id="login_autorization" required> </p>
+  <p><input  type="password" placeholder="password" id="password_autorization" required> </p>
   <p><button id="second">Отправить</button></p>
 </form>
   <script src="script.js"></script>
